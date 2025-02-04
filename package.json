@@ -1,0 +1,26 @@
+{
+  "name": "sgbdproject",
+  "version": "1.0.0",
+  "description": "SGBD project with R. Bertier",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Amylos/SGBDproject.git"
+  },
+  "author": "Enzo Sachiyo Andrew",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Amylos/SGBDproject/issues"
+  },
+  "homepage": "https://github.com/Amylos/SGBDproject#readme",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.12.0"
+  }
+}
