@@ -6,6 +6,8 @@ FLUSH PRIVILEGES;
 
 USE sgbdr_g3;
 
+DROP TABLE IF EXISTS produits;
+
 DROP TABLE IF EXISTS categories;
 CREATE TABLE categories
 (
@@ -22,7 +24,6 @@ CREATE TABLE fournisseurs
     date_creation DATETIME NOT NULL
 );
 
-DROP TABLE IF EXISTS produits;
 CREATE TABLE produits
 (
     produit_id SMALLINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
