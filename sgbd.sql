@@ -1,7 +1,7 @@
 CREATE DATABASE sgbdr_g3;
 
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON 'sgbdr_g3'.* TO 'admin'@'localhost' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON sgbdr_g3.* TO 'admin'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
 USE sgbdr_g3;
@@ -156,9 +156,10 @@ END //
 
 DELIMITER ;
 
--- REVOKE ALL PRIVILEGES ON sgbdr_g3.* FROM 'admin'@'localhost';
--- GRANT EXECUTE ON PROCEDURE sgbdr_g3.AjouterProduit TO 'admin'@'localhost';
--- GRANT EXECUTE ON PROCEDURE sgbdr_g3.ModifierProduit TO 'admin'@'localhost';
--- GRANT EXECUTE ON PROCEDURE sgbdr_g3.ModifierFournisseur TO 'admin'@'localhost';
--- GRANT EXECUTE ON PROCEDURE sgbdr_g3.SupprimerFournisseur TO 'admin'@'localhost'; 
--- FLUSH PRIVILEGES;
+REVOKE ALL PRIVILEGES ON sgbdr_g3.* FROM 'admin'@'localhost';
+GRANT EXECUTE ON PROCEDURE sgbdr_g3.AjouterProduit TO 'admin'@'localhost';
+GRANT EXECUTE ON PROCEDURE sgbdr_g3.ModifierProduit TO 'admin'@'localhost';
+GRANT EXECUTE ON PROCEDURE sgbdr_g3.ModifierFournisseur TO 'admin'@'localhost';
+GRANT EXECUTE ON PROCEDURE sgbdr_g3.SupprimerFournisseur TO 'admin'@'localhost'; 
+GRANT SELECT ON sgbdr_g3.* TO 'admin'@'localhost';
+FLUSH PRIVILEGES;
