@@ -12,9 +12,9 @@ const connectMYSQL = async () => {
         database: process.env.MYSQL_DATABASE
     });
     console.log('Connected to MYSQL');
-    return db; 
+    return db;
   } catch (err) {
-    console.error(err);
+    console.error('Error : ',err);
     process.exit(1);
   }
 };
