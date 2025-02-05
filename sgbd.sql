@@ -146,11 +146,11 @@ BEGIN
 END //
 
 CREATE PROCEDURE SupprimerFournisseur(
-    IN p_fournisseur_nom VARCHAR(255)
+    IN p_fournisseurs_id TINYINT UNSIGNED
 )
 BEGIN
     -- Supprimer le fournisseur
-    DELETE FROM fournisseurs WHERE nom = p_fournisseur_nom; 
+    DELETE FROM fournisseurs WHERE fournisseurs_id = p_fournisseurs_id; 
     
 END //
 

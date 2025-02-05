@@ -1,13 +1,19 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const connecMYSQL = require('./config/mysqldb');
-
-connecMYSQL();
+const connectMYSQL = require('./config/mysqldb');
 
 // Middleware qui permet de traiter les données de la requête
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
+
+app.use(async (req, res, next)  => {
+    req.db = await connectMYSQL();
+    res.on("finish", async function() {
+        await req.db.end();
+    });
+    next();
+});
 
 // produits, fournisseurs, categories
 app.use("/produits", require('./routes/produits.routes'));
