@@ -2,7 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const connectMYSQL = require('./config/mysqldb');
+const cors = require('cors');
 
+app.use(cors()); // Autoriser toutes les origines
 // Middleware qui permet de traiter les données de la requête
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
