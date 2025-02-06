@@ -62,7 +62,7 @@ async function TransformeSportSalut(revendeur){
             "description_produit" : produit.description,
             "nom_fournisseur": produit.fournisseur_nom,
             "en_stock": produit.status === 'disponible' ? 'Oui' : 'Non',
-            "prix" : produit.prix
+            "prix" : parseFloat(produit.prix)
         });
     });
     console.log(structureJSON);
@@ -74,29 +74,25 @@ async function TransformeGamEZ(revendeur){
     console.log(`Les données vont être transformer avec la structure de GamEZ`);
     const [produits] = await RécupérerProduits(revendeur);
 
-    console.log(produits);
-
     let structureJSON = [];
 
     produits.map((produit)=>{
         structureJSON.push(
             {
-                "results": [
-                    {
-                        "product": {
-                            "product_name": produit.produit_nom,
-                            "product_description": produit.description, // Ajouter un champ pour jeuvidéo ou jeu de société
-                            // Calcul automatique : +10% si jeu vidéo,
-                            // +15% si jeu de société
-                            "product_price": produit.prix,
-                            "product_status": produit.status === "disponible" ? "avalaible" : "unavalaible", // ou "unavailable"
-                        },
-                        "seller": {
-                            "seller_name" : produit.fournisseur_nom,
-                            "seller_creation_date" : produit.date_creation
-                        }
-                    }
-                ]
+            "results": [
+                {
+                "product": {
+                    "product_name": produit.produit_nom,
+                    "product_description": produit.description, 
+                    "product_price": parseFloat(produit.prix),
+                    "product_status": produit.status === "disponible" ? "available" : "unavailable",
+                },
+                "seller": {
+                    "seller_name" : produit.fournisseur_nom,
+                    "seller_creation_date" : produit.date_creation
+                }
+                }
+            ]
             }
         )
     });
@@ -119,7 +115,7 @@ async function TransformeMedidonc(revendeur){
                 "p_description" : produit.description,
                 "p_last_update": produit.date_modification,
                 "p_status": produit.status === "dispnible" ? "En stock" : "En rupture de stock",
-                "p_seller": `{ id : ${produit.fournisseurs_id}, name : ${produit.fournisseur_nom}, creation_date : ${produit.date_creation}}`
+                "p_seller": `{\\"id\\":${produit.fournisseurs_id},\\"name\\":\\"${produit.fournisseur_nom}\\",\\"creation_date\\":\\"${produit.date_creation}\\"}`
         })
     });
     console.log(structureJSON);
@@ -127,33 +123,85 @@ async function TransformeMedidonc(revendeur){
     InsererDansMongo(3, structureJSON);
 }
 
-async function InsererDansMongo(revendeur,produits){
-    const mongoDB =  await connectMONGO();
-    try{
-        let result;
+// Check dans la base de données mongo si les produits existent déjà et si oui on les met à jour sinon on les insèrent
+
+async function AddOnSportSalut(mongoDB, produits) {
+    const documents = await mongoDB.collection('sportsalut').find().toArray();
+    const produitsExistant = documents.map((doc) => doc.nom_produit);
+
+    for (let produit of produits) {
+        if (produitsExistant.includes(produit.nom_produit)) {
+            await mongoDB.collection('sportsalut').updateOne(
+                { nom_produit: produit.nom_produit },
+                { $set: produit }
+            );
+        } else {
+            await mongoDB.collection('sportsalut').insertOne(produit);
+        }
+    }
+}
+
+async function AddOnGamEZ(mongoDB, produits) {
+    const documents = await mongoDB.collection('gamez').find().toArray();
+    const produitsExistant = documents.map((doc) => doc.product_name);
+
+    for (let produit of produits) {
+        if (produitsExistant.includes(produit.product_name)) {
+            await mongoDB.collection('gamez').updateOne(
+                { product_name: produit.product_name },
+                { $set: produit }
+            );
+        } else {
+            await mongoDB.collection('gamez').insertOne(produit);
+        }
+    }
+}
+
+async function AddOnMedidonc(mongoDB, produits) {
+    const documents = await mongoDB.collection('medidonc').find().toArray();
+    const produitsExistant = documents.map((doc) => doc.p_name);
+
+    for (let produit of produits) {
+        if (produitsExistant.includes(produit.p_name)) {
+            await mongoDB.collection('medidonc').updateOne(
+                { p_name: produit.p_name },
+                { $set: produit }
+            );
+        } else {
+            await mongoDB.collection('medidonc').insertOne(produit);
+        }
+    }
+}
+
+async function InsererDansMongo(revendeur, produits) {
+    if (produits.length === 0) {
+        console.log('Aucun produit à insérer.');
+        process.exit(0);
+    }
+
+    const mongoDB = await connectMONGO();
+    try {
         switch(revendeur){
-            case 1:
-                result = await mongoDB.collection('sportplus').insertMany(produits);
+            case 1: // revendeur sportsalut
+                await AddOnSportSalut(mongoDB, produits);
                 break;
-            case 2:
-                result  = await mongoDB.collection('gamez').insertMany(produits);
+            case 2: // revendeur gamez
+                await AddOnGamEZ(mongoDB, produits);
                 break;
-            case 3:
-                result = await mongoDB.collection('medidonc').insertMany(produits);
+            case 3:  // revendeur medidonc
+                await AddOnMedidonc(mongoDB, produits);
                 break;
             default:
-                break;
+                throw new Error('Revendeur non reconnu');
         }
-        console.log(result);
     } catch (err) {
         console.error(err);
     } finally {
         await mongoDB.client.close();
         console.log('MongoDB connection closed.');
-        process.exit(0);
+        process.exit(0); // Ensure this is called after the connection is closed
     }
 }
-
 
 async function main(){
     const revendeur = await DemanderRevendeur();
