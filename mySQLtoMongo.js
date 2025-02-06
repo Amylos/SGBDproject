@@ -62,7 +62,7 @@ async function TransformeSportSalut(revendeur){
             "description_produit" : produit.description,
             "nom_fournisseur": produit.fournisseur_nom,
             "en_stock": produit.status === 'disponible' ? 'Oui' : 'Non',
-            "prix" : produit.prix_achat
+            "prix" : produit.prix
         });
     });
     console.log(structureJSON);
@@ -73,6 +73,8 @@ async function TransformeGamEZ(revendeur){
 
     console.log(`Les données vont être transformer avec la structure de GamEZ`);
     const [produits] = await RécupérerProduits(revendeur);
+
+    console.log(produits);
 
     let structureJSON = [];
 
@@ -86,7 +88,7 @@ async function TransformeGamEZ(revendeur){
                             "product_description": produit.description, // Ajouter un champ pour jeuvidéo ou jeu de société
                             // Calcul automatique : +10% si jeu vidéo,
                             // +15% si jeu de société
-                            "product_price": produit.prix_achat,
+                            "product_price": produit.prix,
                             "product_status": produit.status === "disponible" ? "avalaible" : "unavalaible", // ou "unavailable"
                         },
                         "seller": {
@@ -137,15 +139,18 @@ async function InsererDansMongo(revendeur,produits){
                 result  = await mongoDB.collection('gamez').insertMany(produits);
                 break;
             case 3:
-                result = await mongoDB.collection('medisdonc').insertMany(produits);
+                result = await mongoDB.collection('medidonc').insertMany(produits);
                 break;
             default:
                 break;
         }
         console.log(result);
-    }
-    catch(err){
-        console.err(err);
+    } catch (err) {
+        console.error(err);
+    } finally {
+        await mongoDB.client.close();
+        console.log('MongoDB connection closed.');
+        process.exit(0);
     }
 }
 
@@ -153,18 +158,18 @@ async function InsererDansMongo(revendeur,produits){
 async function main(){
     const revendeur = await DemanderRevendeur();
 
-    switch(revendeur){
-    case '1' || 1:
-        TransformeSportSalut(revendeur);
-        break;
-    case '2' || 2:
-        TransformeGamEZ(revendeur);
-        break;
-    case '3' || 3:
-        TransformeMedidonc(revendeur);
-        break;
-    default:
-        break;
+    switch (revendeur) {
+        case '1' || 1:
+            await TransformeSportSalut(revendeur);
+            break;
+        case '2' || 2:
+            await TransformeGamEZ(revendeur);
+            break;
+        case '3' || 3:
+            await TransformeMedidonc(revendeur);
+            break;
+        default:
+            break;
     }
 }
 
