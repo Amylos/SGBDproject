@@ -73,7 +73,7 @@ function App() {
         <div>
             {
                 currentPanel === 'produits' ?
-                <Produits produits = {produits} fournisseurs = {fournisseurs} categories = {categories}/>
+                <Produits produits = {produits} fournisseurs = {fournisseurs} categories = {categories} RecupererProduits = {RecupererProduits}/>
                 :
                 currentPanel === 'fournisseurs' ?
                 <Fournisseurs fournisseurs = {fournisseurs} RecupererFournisseurs = {RecupererFournisseurs}/>
