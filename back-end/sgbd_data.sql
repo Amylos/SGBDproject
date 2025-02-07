@@ -5,7 +5,6 @@ INSERT INTO categories (categorie_nom, date_creation) VALUES
 ('Sport', NOW()),
 ('Santé', NOW());
 
-
 -- FOURNISSEURS
 
 INSERT INTO fournisseurs (fournisseur_nom, date_creation) VALUES 
@@ -20,9 +19,7 @@ INSERT INTO fournisseurs (fournisseur_nom, date_creation) VALUES
 ('Fournisseur I', NOW()),
 ('Fournisseur J', NOW());
 
-
 -- PRODUITS
-
 
 INSERT INTO produits (produit_nom, description, prix_achat, status, categorie_id, fournisseur_id, date_creation, date_modification) VALUES
 ('Console de jeux XYZ', 'Console de jeux dernier cri avec des fonctionnalités avancées.', 500, 'disponible', 1, 1, NOW(), NOW()),
