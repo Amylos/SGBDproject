@@ -5,14 +5,14 @@ const Fournisseurs = (props) => {
 
     const [isEditing, setIsEditing] = useState(false);
     const [currentFournisseur, setCurrentFournisseur] = useState({
-        fournisseurs_id: '',
+        fournisseur_id: '',
         fournisseur_nom: ''
     });
 
     const CommencerEdition = (fournisseur) => {
         setIsEditing(true); // Passe en mode édition
         setCurrentFournisseur({
-            fournisseurs_id: fournisseur.fournisseurs_id,
+            fournisseur_id: fournisseur.fournisseur_id,
             fournisseur_nom: fournisseur.fournisseur_nom
         });
     };
@@ -23,7 +23,7 @@ const Fournisseurs = (props) => {
 
     const ModifierFournisseur = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/fournisseurs/${currentFournisseur.fournisseurs_id}`, {
+                const response = await fetch(`http://localhost:3000/fournisseurs/${currentFournisseur.fournisseur_id}`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json'
@@ -82,13 +82,13 @@ const Fournisseurs = (props) => {
                         {fournisseurs.map((fournisseur, index) => (
                             <tr key={index}>
                                 <td>
-                                {fournisseur.fournisseurs_id}
+                                {fournisseur.fournisseur_id}
                                 </td>
                                 <td>
                                     <input
                                         type="text"
                                         name="fournisseur_nom"
-                                        value={isEditing && currentFournisseur.fournisseurs_id === fournisseur.fournisseurs_id ? currentFournisseur.fournisseur_nom : fournisseur.fournisseur_nom}
+                                        value={isEditing && currentFournisseur.fournisseur_id === fournisseur.fournisseur_id ? currentFournisseur.fournisseur_nom : fournisseur.fournisseur_nom}
                                         onChange={Changement}
                                         disabled={!isEditing || currentFournisseur.fournisseur_id !== fournisseur.fournisseur_id}
                                     />
@@ -102,7 +102,7 @@ const Fournisseurs = (props) => {
                                     ) : (
                                         <>
                                             <button onClick={() => CommencerEdition(fournisseur)}>Modifier</button>
-                                            <button onClick={() => SupprimerFournisseur(fournisseur.fournisseurs_id)}>Supprimer</button>
+                                            <button onClick={() => SupprimerFournisseur(fournisseur.fournisseur_id)}>Supprimer</button>
                                         </>
                                     )}
                                 </td>

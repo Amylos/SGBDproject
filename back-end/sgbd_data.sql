@@ -24,7 +24,7 @@ INSERT INTO fournisseurs (fournisseur_nom, date_creation) VALUES
 -- PRODUITS
 
 
-INSERT INTO produits (produit_nom, description, prix_achat, status, categorie_id, fournisseurs_id, date_creation, date_modification) VALUES
+INSERT INTO produits (produit_nom, description, prix_achat, status, categorie_id, fournisseur_id, date_creation, date_modification) VALUES
 ('Console de jeux XYZ', 'Console de jeux dernier cri avec des fonctionnalités avancées.', 500, 'disponible', 1, 1, NOW(), NOW()),
 ('Manette de Jeu', 'Manette sans fil pour des sessions de jeu confortables.', 50.50, 'disponible', 1, 2, NOW(), NOW()),
 ('Chaussures de Foot', 'Chaussures de football professionnelles pour terrains synthétiques.', 100.99, 'disponible', 2, 3, NOW(), NOW()),

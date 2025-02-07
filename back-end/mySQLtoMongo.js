@@ -115,7 +115,7 @@ async function TransformeMedidonc(revendeur){
                 "p_description" : produit.description,
                 "p_last_update": produit.date_modification,
                 "p_status": produit.status === "dispnible" ? "En stock" : "En rupture de stock",
-                "p_seller": `{\\"id\\":${produit.fournisseurs_id},\\"name\\":\\"${produit.fournisseur_nom}\\",\\"creation_date\\":\\"${produit.date_creation}\\"}`
+                "p_seller": `{\\"id\\":${produit.fournisseur_id},\\"name\\":\\"${produit.fournisseur_nom}\\",\\"creation_date\\":\\"${produit.date_creation}\\"}`
         })
     });
     console.log(structureJSON);

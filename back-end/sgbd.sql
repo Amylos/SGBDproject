@@ -19,7 +19,7 @@ CREATE TABLE categories
 DROP TABLE IF EXISTS fournisseurs;
 CREATE TABLE fournisseurs
 (
-    fournisseurs_id TINYINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    fournisseur_id TINYINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
     fournisseur_nom VARCHAR(255) UNIQUE NOT NULL,
     date_creation DATETIME NOT NULL
 );
@@ -28,7 +28,7 @@ CREATE TABLE produits
 (
     produit_id SMALLINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
     categorie_id TINYINT UNSIGNED NOT NULL,
-    fournisseurs_id TINYINT UNSIGNED NOT NULL,
+    fournisseur_id TINYINT UNSIGNED NOT NULL,
     produit_nom VARCHAR(255) UNIQUE NOT NULL,
     description TEXT NOT NULL,
     prix_achat SMALLINT UNSIGNED NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE produits
     date_creation DATETIME NOT NULL,
     date_modification DATETIME NOT NULL,
     FOREIGN KEY (categorie_id) REFERENCES categories(categorie_id) ON DELETE CASCADE,
-    FOREIGN KEY (fournisseurs_id) REFERENCES fournisseurs(fournisseurs_id) ON DELETE CASCADE
+    FOREIGN KEY (fournisseur_id) REFERENCES fournisseurs(fournisseur_id) ON DELETE CASCADE
 ); 
 
 DELIMITER //
@@ -69,7 +69,7 @@ BEGIN
     END IF;
 
     -- Vérifier si le fournisseur existe déjà
-    SELECT fournisseurs_id INTO v_fournisseur_id FROM fournisseurs WHERE fournisseurs.fournisseur_nom = p_fournisseur_nom;
+    SELECT fournisseur_id INTO v_fournisseur_id FROM fournisseurs WHERE fournisseurs.fournisseur_nom = p_fournisseur_nom;
 
     -- Si le fournisseur n'existe pas, le créer
     IF v_fournisseur_id IS NULL THEN
@@ -83,7 +83,7 @@ BEGIN
     -- END IF;
 
     -- Insérer le produit avec la catégorie et le fournisseur
-    INSERT INTO produits (produit_nom, description, prix_achat, status, categorie_id, fournisseurs_id, date_creation, date_modification)
+    INSERT INTO produits (produit_nom, description, prix_achat, status, categorie_id, fournisseur_id, date_creation, date_modification)
     VALUES (p_nom, p_description, p_prix_achat, p_status, v_categorie_id, v_fournisseur_id, v_now, v_now);
     
 END //
@@ -117,7 +117,7 @@ BEGIN
     END IF;
 
     -- Vérifier si le fournisseur existe déjà
-    SELECT fournisseurs_id INTO v_fournisseur_id FROM fournisseurs WHERE fournisseurs.fournisseur_nom = p_fournisseur_nom;
+    SELECT fournisseur_id INTO v_fournisseur_id FROM fournisseurs WHERE fournisseurs.fournisseur_nom = p_fournisseur_nom;
 
     -- Si le fournisseur n'existe pas, le créer
     IF v_fournisseur_id IS NULL THEN
@@ -133,7 +133,7 @@ BEGIN
         prix_achat = p_prix_achat,
         status = p_status,
         categorie_id = v_categorie_id,
-        fournisseurs_id = v_fournisseur_id,
+        fournisseur_id = v_fournisseur_id,
         date_modification = v_now
     WHERE produit_id = p_produit_id;
     
@@ -141,22 +141,22 @@ END //
 
 DROP PROCEDURE IF EXISTS ModifierFournisseur //
 CREATE PROCEDURE ModifierFournisseur(
-    IN p_fournisseurs_id TINYINT UNSIGNED,
+    IN p_fournisseur_id TINYINT UNSIGNED,
     IN p_nom VARCHAR(255)
 )
 BEGIN
     -- Mettre à jour le fournisseur
-    UPDATE fournisseurs SET fournisseur_nom = p_nom WHERE fournisseurs_id = p_fournisseurs_id;
+    UPDATE fournisseurs SET fournisseur_nom = p_nom WHERE fournisseur_id = p_fournisseur_id;
     
 END //
 
 DROP PROCEDURE IF EXISTS SupprimerFournisseur //
 CREATE PROCEDURE SupprimerFournisseur(
-    IN p_fournisseurs_id TINYINT UNSIGNED
+    IN p_fournisseur_id TINYINT UNSIGNED
 )
 BEGIN
     -- Supprimer le fournisseur
-    DELETE FROM fournisseurs WHERE fournisseurs_id = p_fournisseurs_id; 
+    DELETE FROM fournisseurs WHERE fournisseur_id = p_fournisseur_id; 
     
 END //
 
@@ -168,7 +168,7 @@ BEGIN
     -- Récupere tous les articles de sports
     SELECT produits.produit_nom, description, fournisseurs.fournisseur_nom, status, produits.prix_achat * 1.2 AS prix
     FROM Produits INNER JOIN categories ON categories.categorie_id = produits.categorie_id
-    INNER JOIN Fournisseurs ON fournisseurs.fournisseurs_id = produits.fournisseurs_id
+    INNER JOIN Fournisseurs ON fournisseurs.fournisseur_id = produits.fournisseur_id
     WHERE categories.categorie_nom = "Sport";
     
 END //
@@ -184,7 +184,7 @@ BEGIN
          WHEN categories.categorie_nom = "Jeux vidéo" THEN produits.prix_achat * 1.1
     END AS prix, status, fournisseurs.fournisseur_nom, fournisseurs.date_creation, categories.categorie_nom
     FROM Produits INNER JOIN categories ON categories.categorie_id = produits.categorie_id
-    INNER JOIN Fournisseurs ON fournisseurs.fournisseurs_id = produits.fournisseurs_id
+    INNER JOIN Fournisseurs ON fournisseurs.fournisseur_id = produits.fournisseur_id
     WHERE categories.categorie_nom = "Jeux vidéo" OR categories.categorie_nom = "Jeux de société";
 
     
@@ -197,9 +197,9 @@ CREATE PROCEDURE ProduitsMEDIDONC()
 BEGIN
 
     -- Récupere tous les articles de sports
-    SELECT produits.produit_nom, description, date_modification, status, fournisseurs.fournisseurs_id, fournisseurs.fournisseur_nom, fournisseurs.date_creation 
+    SELECT produits.produit_nom, description, date_modification, status, fournisseurs.fournisseur_id, fournisseurs.fournisseur_nom, fournisseurs.date_creation 
     FROM Produits INNER JOIN categories ON categories.categorie_id = produits.categorie_id
-    INNER JOIN Fournisseurs ON fournisseurs.fournisseurs_id = produits.fournisseurs_id
+    INNER JOIN Fournisseurs ON fournisseurs.fournisseur_id = produits.fournisseur_id
     WHERE categories.categorie_nom = "Sport" OR categories.categorie_nom = "Santé";
     
 END //

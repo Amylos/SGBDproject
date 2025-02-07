@@ -26,7 +26,7 @@ function App() {
                 method: 'GET',
             });
             const data = await response.json();
-            console.log(data);
+            console.log('récuperer produit : ', data);
             setProduits(data);
         }
         catch (err) {

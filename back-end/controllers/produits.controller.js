@@ -28,7 +28,9 @@ module.exports.ModifierProduit = async (req, res) => {
 
 module.exports.AfficherProduit = async (req, res) => {
     try {
-        const [rows] = await req.db.query("SELECT * FROM produits");
+        const [rows] = await req.db.query(`SELECT produit_id, produit_nom, description, prix_achat, status, produits.date_creation, produits.date_modification, produits.fournisseur_id, produits.categorie_id, categorie_nom, fournisseur_nom
+                                            FROM produits INNER JOIN categories ON produits.categorie_id = categories.categorie_id
+                                            INNER JOIN fournisseurs ON produits.fournisseur_id = fournisseurs.fournisseur_id`);
         res.status(200).json(rows);
     } catch (err) {
         res.status(400).json(err);

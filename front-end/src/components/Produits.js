@@ -20,7 +20,7 @@ const Produits = ({ produits, fournisseurs, categories, RecupererProduits }) => 
 
     const FournisseurNom = (fournisseur_id) => {
         if (!fournisseurs) return '';
-        const fournisseur = fournisseurs.find(fournisseur => fournisseur.fournisseurs_id === fournisseur_id);
+        const fournisseur = fournisseurs.find(fournisseur => fournisseur.fournisseur_id === fournisseur_id);
         return fournisseur ? fournisseur.fournisseur_nom : '';
     };
 
@@ -33,7 +33,7 @@ const Produits = ({ produits, fournisseurs, categories, RecupererProduits }) => 
             prix_achat: produit.prix_achat,
             status: produit.status,
             categorie_nom: CategorieNom(produit.categorie_id),
-            fournisseur_nom: FournisseurNom(produit.fournisseurs_id)
+            fournisseur_nom: FournisseurNom(produit.fournisseur_id)
         });
     };
 
@@ -160,11 +160,11 @@ const Produits = ({ produits, fournisseurs, categories, RecupererProduits }) => 
                                         fournisseurs ?
                                             <select
                                                 name="fournisseur_nom"
-                                                value={isEditing && currentProduit.produit_id === produit.produit_id ? currentProduit.fournisseur_nom : FournisseurNom(produit.fournisseurs_id)}
+                                                value={isEditing && currentProduit.produit_id === produit.produit_id ? currentProduit.fournisseur_nom : FournisseurNom(produit.fournisseur_id)}
                                                 onChange={Changement}
                                                 disabled={!isEditing}>
                                                 {fournisseurs.map(fournisseur => (
-                                                    <option key={fournisseur.fournisseurs_id} value={fournisseur.fournisseur_nom}>
+                                                    <option key={fournisseur.fournisseur_id} value={fournisseur.fournisseur_nom}>
                                                         {fournisseur.fournisseur_nom}
                                                     </option>
                                                 ))}
