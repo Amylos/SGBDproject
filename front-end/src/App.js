@@ -20,7 +20,7 @@ function App() {
         RecupererCategories();
     },[]);
 
-    async function RecupererProduits() {
+    async function RecupererProduits() { // Récupération des produits dans la BDD MySQL
         try {
             const response = await fetch('http://localhost:3000/produits', {
                 method: 'GET',
@@ -34,7 +34,7 @@ function App() {
         }
     }
 
-   async function RecupererFournisseurs() {
+   async function RecupererFournisseurs() {// Récupération des fournisseurs dans la BDD MySQL
         try {
             const response = await fetch('http://localhost:3000/fournisseurs', {
                 method: 'GET',
@@ -48,7 +48,7 @@ function App() {
         }
     }
 
-    async function RecupererCategories() {
+    async function RecupererCategories() { // Récupération des catégories dans la BDD MySQL
         try {
             const response = await fetch('http://localhost:3000/categories', {
                 method: 'GET',
@@ -64,27 +64,26 @@ function App() {
 
     return (
         <div className='App'>
-        <nav className='Nav'>
-            <h1>Système central</h1>
-            <button onClick={() =>{setCurrentPanel('produits')}}>Produits</button>
-            <button onClick={() =>{setCurrentPanel('fournisseurs')}}>Fournisseurs</button>
-            <button onClick={() =>{setCurrentPanel('categories')}}>Catégories</button>
-        </nav>
-        <div>
-            {
-                currentPanel === 'produits' ?
-                <Produits produits = {produits} fournisseurs = {fournisseurs} categories = {categories} RecupererProduits = {RecupererProduits}/>
-                :
-                currentPanel === 'fournisseurs' ?
-                <Fournisseurs fournisseurs = {fournisseurs} RecupererFournisseurs = {RecupererFournisseurs}/>
-                :
-                currentPanel === 'categories' ?
-                <Categories categories = {categories}/>
-                :
-                null
-            }
-
-        </div>
+            <nav className='Nav'>
+                <h1>Système central</h1>
+                <button onClick={() =>{setCurrentPanel('produits')}}>Produits</button>
+                <button onClick={() =>{setCurrentPanel('fournisseurs')}}>Fournisseurs</button>
+                <button onClick={() =>{setCurrentPanel('categories')}}>Catégories</button>
+            </nav>
+            <div>
+                {
+                    currentPanel === 'produits' ?
+                    <Produits produits = {produits} fournisseurs = {fournisseurs} categories = {categories} RecupererProduits = {RecupererProduits}/>
+                    :
+                    currentPanel === 'fournisseurs' ?
+                    <Fournisseurs fournisseurs = {fournisseurs} RecupererFournisseurs = {RecupererFournisseurs}/>
+                    :
+                    currentPanel === 'categories' ?
+                    <Categories categories = {categories}/>
+                    :
+                    null
+                }
+            </div>
         </div>
     );
 }

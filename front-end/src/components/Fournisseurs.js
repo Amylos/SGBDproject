@@ -10,7 +10,7 @@ const Fournisseurs = (props) => {
     });
 
     const CommencerEdition = (fournisseur) => {
-        setIsEditing(true); // Passe en mode édition
+        setIsEditing(true); // Passer en mode édition
         setCurrentFournisseur({
             fournisseur_id: fournisseur.fournisseur_id,
             fournisseur_nom: fournisseur.fournisseur_nom
@@ -18,7 +18,7 @@ const Fournisseurs = (props) => {
     };
 
     const AnnulerEdition = () => {
-        setIsEditing(false);
+        setIsEditing(false); // Enlever le mode édition
     };
 
     const ModifierFournisseur = async () => {
@@ -33,11 +33,11 @@ const Fournisseurs = (props) => {
                     })
                 });
                 const data = await response.json();
-                console.log("Fournisseur modifié avec succès :", data);
-                RecupererFournisseurs();
+                console.log("Fournisseur modifié : ", data);
+                RecupererFournisseurs(); // On met à jour la liste des fournisseurs
             }
             catch (err) {
-                console.error("Erreur lors de la modification du fournisseur :", err);
+                console.error("Erreur lors de la modification : ", err);
             }
             setIsEditing(false);
     };
@@ -52,11 +52,11 @@ const Fournisseurs = (props) => {
             });
 
             const data = await response.json();
-            console.log("Fournisseur supprimé avec succès :", data);
-            RecupererFournisseurs();
+            console.log("Fournisseur supprimé :", data);
+            RecupererFournisseurs(); // On met à jour la liste des fournisseurs
         }
         catch (err) {
-            console.error("Erreur lors de la modification du fournisseur :", err);
+            console.error("Erreur lors de la modification : ", err);
         }
     };
 

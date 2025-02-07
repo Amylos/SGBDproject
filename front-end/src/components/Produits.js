@@ -70,7 +70,7 @@ const Produits = ({ produits, fournisseurs, categories, RecupererProduits }) => 
                 })
             });
             const data = await response.json();
-            console.log("Produit modifié avec succès :", data);
+            console.log("Produit modifié :", data);
             RecupererProduits();
             setIsEditing(false);
         } catch (err) {
@@ -219,7 +219,7 @@ const AjouterProduitComposant = (props) => {
         fournisseur_nom: ""
     });
 
-    const handleChange = (e) => {
+    const Changement = (e) => {
         setNouveauProduit({
             ...nouveauProduit,
             [e.target.name]: e.target.value
@@ -238,7 +238,7 @@ const AjouterProduitComposant = (props) => {
 
             const data = await response.json();
             console.log("Produit ajouté avec succès :", data);
-            RecupererProduits();
+            RecupererProduits(); // On met à jour la liste des produits
         }
         catch (err) {
             console.error("Erreur lors de l'ajout du produit :", err);
@@ -248,17 +248,17 @@ const AjouterProduitComposant = (props) => {
 
     return (
         <div className='AjouterProduitComposant'>
-            <input type="text" name="nom" value={nouveauProduit.nom} onChange={handleChange} placeholder="Nom du produit"/>
-            <input  type="text" name="description" value={nouveauProduit.description} onChange={handleChange} placeholder="Description"/>
-            <input type="number" name="prix_achat" value={nouveauProduit.prix_achat} onChange={handleChange} placeholder="Prix d'achat"/>
-            <select name="status" value={nouveauProduit.status} onChange={handleChange}>
+            <input type="text" name="nom" value={nouveauProduit.nom} onChange={Changement} placeholder="Nom du produit"/>
+            <input  type="text" name="description" value={nouveauProduit.description} onChange={Changement} placeholder="Description"/>
+            <input type="number" name="prix_achat" value={nouveauProduit.prix_achat} onChange={Changement} placeholder="Prix d'achat"/>
+            <select name="status" value={nouveauProduit.status} onChange={Changement}>
                 <option value="Disponible">Disponible</option>
                 <option value="En rupture">En rupture</option>
             </select>
             <select
                 name="categorie_nom"
                 value={nouveauProduit.categorie_nom}
-                onChange={handleChange}>
+                onChange={Changement}>
                 {
                     categories.map(categorie => (
                         <option key={categorie.categorie_id} value={categorie.categorie_nom}>
@@ -270,7 +270,7 @@ const AjouterProduitComposant = (props) => {
             <select
                 name="fournisseur_nom"
                 value={nouveauProduit.fournisseur_nom}
-                onChange={handleChange}>
+                onChange={Changement}>
                 {
                     fournisseurs.map(fournisseur => (
                         <option key={fournisseur.fournisseur_id} value={fournisseur.fournisseur_nom}>
