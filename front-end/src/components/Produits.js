@@ -171,7 +171,6 @@ const Produits = ({ produits, fournisseurs, categories, RecupererProduits }) => 
                                                     ))}
                                                 </select>
                                             :
-
                                             null
                                         }
                                     </td>
