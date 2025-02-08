@@ -123,7 +123,7 @@ async function TransformeMedidonc(revendeur){
     InsererDansMongo(3, structureJSON);
 }
 
-// Check dans la base de données mongo si les produits existent déjà et si oui on les met à jour sinon on les insèrent
+// Check dans la base de données mongo si les produits existent déjà et si oui on les met à jour sinon on les insère
 
 async function AddOnSportSalut(mongoDB, produits) {
     const collections = await mongoDB.listCollections().toArray();
@@ -132,7 +132,7 @@ async function AddOnSportSalut(mongoDB, produits) {
     if (!collectionNames.includes('sportsalut')) {
         await mongoDB.createCollection('sportsalut', {
             validator: {
-                $jsonSchema: { 
+                $jsonSchema: {
                     bsonType: "object",
                     title: "SportSalut Object Validation",
                     required: ["nom_produit", "description_produit", "nom_fournisseur", "en_stock", "prix"],
@@ -164,11 +164,11 @@ async function AddOnSportSalut(mongoDB, produits) {
         });
         await mongoDB.collection('sportsalut').insertMany(produits);
     }
-    else 
+    else
     {
         const documents = await mongoDB.collection('sportsalut').find().toArray();
         const produitsExistant = documents.map((doc) => doc.nom_produit);
-    
+
         for (let produit of produits) {
             if (produitsExistant.includes(produit.nom_produit)) {
                 await mongoDB.collection('sportsalut').updateOne(
@@ -183,125 +183,124 @@ async function AddOnSportSalut(mongoDB, produits) {
 }
 
 async function AddOnGamEZ(mongoDB, produits) {
-    // const collections = await mongoDB.listCollections().toArray();
-    // const collectionNames = collections.map((collection) => collection.name);
+    const collections = await mongoDB.listCollections().toArray();
+    const collectionNames = collections.map((collection) => collection.name);
 
-    // try to make validation on collection gamez but didn't work
-    // if (!collectionNames.includes('gamez')) {
-    //     await mongoDB.createCollection('gamez', {
-    //         validator: {
-    //             $jsonSchema: { 
-    //                 bsonType: "object",
-    //                 title: "gamez Object Validation",
-    //                 required: ["results"],
-    //                 properties: {
-    //                     results: {
-    //                         bsonType: "array",
-    //                         items: {
-    //                             bsonType: "object",
-    //                             required: ["product", "seller"],
-    //                             properties: {
-    //                                 product: {
-    //                                     bsonType: "object",
-    //                                     required: ["product_name", "product_description", "product_price", "product_status"],
-    //                                     properties: {
-    //                                         product_name: {
-    //                                             bsonType: "string",
-    //                                             description: "'product_name' must be a string and is required"
-    //                                         },
-    //                                         product_description: {
-    //                                             bsonType: "string",
-    //                                             description: "'product_description' must be a string and is required"
-    //                                         },
-    //                                         product_price: {
-    //                                             bsonType: ["double", "int", "long", "decimal"],
-    //                                             description: "'product_price' must be a number and is required"
-    //                                         },
-    //                                         product_status: {
-    //                                             bsonType: "string",
-    //                                             enum: ["available", "unavailable"],
-    //                                             description: "'product_status' must be either 'available' or 'unavailable' and is required"
-    //                                         }
-    //                                     }
-    //                                 },
-    //                                 seller: {
-    //                                     bsonType: "object",
-    //                                     required: ["seller_name", "seller_creation_date"],
-    //                                     properties: {
-    //                                         seller_name: {
-    //                                             bsonType: "string",
-    //                                             description: "'seller_name' must be a string and is required"
-    //                                         },
-    //                                         seller_creation_date: {
-    //                                             bsonType: "string",
-    //                                             description: "'seller_creation_date' must be a string and is required"
-    //                                         }
-    //                                     }
-    //                                 }
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     });
-    //     await mongoDB.collection('gamez').insertMany(produits);
-    // }
-    const documents = await mongoDB.collection('gamez').find().toArray();
-    const produitsExistant = documents.map((doc) => doc.product_name);
+    // Vérifie si la collection 'gamez' existe déjà
+    if (!collectionNames.includes('gamez')) {
+        // Créer la collection 'gamez' avec un validateur
+        await mongoDB.createCollection("gamez", {
+            validator: {
+                $jsonSchema: {
+                    bsonType: "object",
+                    title: "Gamez Object Validation",
+                    required: ["results"],
+                    properties: {
+                        results: {
+                            bsonType: "array",
+                            items: {
+                                bsonType: "object",
+                                properties: {
+                                    product: {
+                                        bsonType: "object",
+                                        required: ["product_name", "product_description", "product_price", "product_status"], // Ajoute les champs requis ici
+                                        properties: {
+                                            product_name: {
+                                                bsonType: "string",
+                                                description: "product_name must be a string"
+                                            },
+                                            product_description: {
+                                                bsonType: "string",
+                                                description: "product_description must be a string"
+                                            },
+                                            product_price: {
+                                                bsonType: ["double", "int", "long", "decimal"],
+                                                description: "product_pric must be either 'double', 'int', 'long' or 'decimal'."
+                                            },
+                                            product_status: {
+                                                bsonType: "string",
+                                                description: "prodcut_status must be a string"
+                                            }
+                                        }
+                                    },
+                                    seller: {
+                                        bsonType: "object",
+                                        properties: {
+                                            seller_name: {
+                                                bsonType: "string",
+                                                description: "seller_name must be a string"
+                                            },
+                                            seller_creation_date: {
+                                                bsonType: "date",
+                                                description: "seller_creation_date must be a date"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        await mongoDB.collection('gamez').insertMany(produits);
+    }
+    else {
+        const documents = await mongoDB.collection('gamez').find().toArray();
+        const produitsExistant = documents.map((doc) => doc.product_name);
 
-    for (let produit of produits) {
-        if (produitsExistant.includes(produit.product_name)) {
-            await mongoDB.collection('gamez').updateOne(
-                { product_name: produit.product_name },
-                { $set: produit }
-            );
-        } else {
-            await mongoDB.collection('gamez').insertOne(produit);
+        for (let produit of produits) {
+            if (produitsExistant.includes(produit.product_name)) {
+                await mongoDB.collection('gamez').updateOne(
+                    { product_name: produit.product_name },
+                    { $set: produit }
+                );
+            } else {
+                await mongoDB.collection('gamez').insertOne(produit);
+            }
         }
     }
 }
 
 async function AddOnMedidonc(mongoDB, produits) {
-    // const collections = await mongoDB.listCollections().toArray();
-    // const collectionNames = collections.map((collection) => collection.name);
+    const collections = await mongoDB.listCollections().toArray();
+    const collectionNames = collections.map((collection) => collection.name);
 
-    // try to make validation on collection medidonc but didn't work
-    // if (!collectionNames.includes('medidonc')) {
-    //     await mongoDB.createCollection('medidonc', {
-    //         validator: {
-    //             $jsonSchema: { 
-    //                 bsonType: "object",
-    //                 title: "Medidonc Object Validation",
-    //                 required: ["p_name", "p_description", "p_last_update", "p_status", "p_seller"],
-    //                 properties: {
-    //                     p_name: {
-    //                         bsonType: "string",
-    //                         description: "'p_name' must be a string and is required"
-    //                     },
-    //                     p_description: {
-    //                         bsonType: "string",
-    //                         description: "'p_description' must be a string and is required"
-    //                     },
-    //                     p_last_update: {
-    //                         bsonType: "string",
-    //                         description: "'p_last_update' must be a string and is required"
-    //                     },
-    //                     p_status: {
-    //                         bsonType: "string",
-    //                         enum: ["En stock", "Rupture de stock"],
-    //                         description: "'p_status' must be a string either 'En stock' or 'Rupture de stock' and is required"
-    //                     },
-    //                     p_seller: {
-    //                         bsonType: "string",
-    //                         description: "'p_seller' must be a string and is required"
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     });
-    //     await mongoDB.collection('medidonc').insertMany(produits);
-    // }
+    // try to make validation on collection medidonc
+    if (!collectionNames.includes('medidonc')) {
+        await mongoDB.createCollection('medidonc', {
+            validator: {
+                $jsonSchema: {
+                    bsonType: "object",
+                    title: "Medidonc Object Validation",
+                    required: ["p_name", "p_description", "p_last_update", "p_status","p_seller"],
+                    properties: {
+                        p_name: {
+                            bsonType: "string",
+                            description: "'p_name' must be a string"
+                        },
+                        p_description: {
+                            bsonType: "string",
+                            description: "'p_description' must be a string"
+                        },
+                        p_last_update: {
+                            bsonType: "string",
+                            description: "'p_last_update' must be a string"
+                        },
+                        p_status: {
+                            bsonType: "string",
+                            description: "'p_status' must be a string either 'En stock' or 'Rupture de stock' and is required"
+                        },
+                        p_seller: {
+                            bsonType: "string",
+                            description: "'p_seller' must be a string"
+                        }
+                    }
+                }
+            }
+        });
+        await mongoDB.collection('medidonc').insertMany(produits);
+    }
     const documents = await mongoDB.collection('medidonc').find().toArray();
     const produitsExistant = documents.map((doc) => doc.p_name);
 

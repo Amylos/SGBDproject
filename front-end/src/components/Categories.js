@@ -10,7 +10,7 @@ const Categories = (props) => {
         <div>
             {
                 categories ?
-                    <table>
+                    <table className='table'>
                         <thead>
                             <tr>
                                 <th>ID</th>

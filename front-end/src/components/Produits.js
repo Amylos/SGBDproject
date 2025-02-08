@@ -82,7 +82,7 @@ const Produits = ({ produits, fournisseurs, categories, RecupererProduits }) => 
         <div className="Produits">
             {
                 produits ? (
-                    <table>
+                    <table className='table'>
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -108,7 +108,7 @@ const Produits = ({ produits, fournisseurs, categories, RecupererProduits }) => 
                                         />
                                     </td>
                                     <td>
-                                        <input
+                                        <input className='description'
                                             type="text"
                                             name="description"
                                             value={isEditing && currentProduit.produit_id === produit.produit_id ? currentProduit.description : produit.description}
@@ -117,7 +117,7 @@ const Produits = ({ produits, fournisseurs, categories, RecupererProduits }) => 
                                         />
                                     </td>
                                     <td>
-                                        <input
+                                        <input  className='prix'
                                             type="number"
                                             name="prix_achat"
                                             value={isEditing && currentProduit.produit_id === produit.produit_id ? currentProduit.prix_achat : produit.prix_achat}
@@ -178,11 +178,11 @@ const Produits = ({ produits, fournisseurs, categories, RecupererProduits }) => 
                                     <td>
                                         {isEditing && currentProduit.produit_id === produit.produit_id ? (
                                             <>
-                                                <button onClick={ModifierProduit}>Sauvegarder</button>
-                                                <button onClick={AnnulerEdition}>Annuler</button>
+                                                <button onClick={ModifierProduit} className='button-sauv'>Sauvegarder</button>
+                                                <button onClick={AnnulerEdition} className='button-ann'>Annuler</button>
                                             </>
                                         ) : (
-                                            <button onClick={() => CommencerEdition(produit)}>Modifier</button>
+                                            <button onClick={() => CommencerEdition(produit)} className='button-mod'>Modifier</button>
                                         )}
                                     </td>
                                 </tr>

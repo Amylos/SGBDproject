@@ -71,7 +71,7 @@ const Fournisseurs = (props) => {
     return (
         <div className="Fournisseurs">
             {fournisseurs ? (
-                <table>
+                <table className='table'>
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -96,13 +96,13 @@ const Fournisseurs = (props) => {
                                 <td>
                                     {isEditing && currentFournisseur.fournisseur_id === fournisseur.fournisseur_id ? (
                                         <>
-                                            <button onClick={() => {ModifierFournisseur()}}>Sauvegarder</button>
-                                            <button onClick={() => {AnnulerEdition()}}>Annuler</button>
+                                            <button onClick={() => {ModifierFournisseur()}} className='button-sauv'>Sauvegarder</button>
+                                            <button onClick={() => {AnnulerEdition()}} className='button-ann'>Annuler</button>
                                         </>
                                     ) : (
                                         <>
-                                            <button onClick={() => CommencerEdition(fournisseur)}>Modifier</button>
-                                            <button onClick={() => SupprimerFournisseur(fournisseur.fournisseur_id)}>Supprimer</button>
+                                            <button onClick={() => CommencerEdition(fournisseur)} className='button-mod'>Modifier</button>
+                                            <button onClick={() => SupprimerFournisseur(fournisseur.fournisseur_id)} className='button-sup'>Supprimer</button>
                                         </>
                                     )}
                                 </td>

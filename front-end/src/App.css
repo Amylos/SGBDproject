@@ -1,6 +1,123 @@
 :root{
-  --background: rgb(13, 13, 14);
-  --second-background: rgb(21,21,21);
-  --white: rgb(208, 208, 209);
+  --white: rgb(243, 243, 246);
   --black: black;
+  --grey: rgb(74, 75, 75);
+  --greyClear: rgb(172, 173, 173);
+  --blue: rgb(97, 97, 133);
+  --green:rgb(173, 222, 173);
+  --orange:rgb(245, 212, 114);
+  --red:rgb(241, 154, 134)
+}
+
+body{
+  background-color: var(--white);
+  color: var(--grey);
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+
+}
+
+h1 {
+  color: rgb(74, 80, 97);
+  text-align: center;
+  margin: 0;
+  margin: 2em;
+  font-size: 2em;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+}
+
+.button {
+  width: 12em;
+  height: 3em;
+  margin: 0.5em;
+  border-radius: 0.5em;
+  background-color: var(--blue);
+  color: var(--white);
+  text-decoration: none;
+  border: none;
+  margin-bottom: 1.5rem;
+  margin-top: 1rem;
+}
+
+.button-mod {
+  width: 8em;
+  height: 2em;
+  border-radius: 0.2em;
+  background-color: rgb(146, 189, 236);
+  color: var(--white);
+  text-decoration: none;
+  border: none;
+  margin-left: 1.2em;
+  margin-right: 0.5em;
+}
+
+.button-sup {
+  width: 8em;
+  height: 2em;
+  border-radius: 0.2em;
+  background-color:var(--red);
+  color: var(--white);
+  text-decoration: none;
+  border: none;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+.button-sauv{
+  width: 8em;
+  height: 2em;
+  border-radius: 0.2em;
+  background-color: var(--green);
+  color: var(--grey);
+  text-decoration: none;
+  border: none;
+  margin-left: 0.5em;
+  margin-right: 1.2em;
+}
+
+.button-ann{
+  width: 8em;
+  height: 2em;
+  border-radius: 0.2em;
+  background-color: rgb(245, 212, 114);
+  color: var(--grey);
+  text-decoration: none;
+  border: none;
+  margin-left: 0.5em;
+  margin-right: 1.2em;
+}
+
+.table{
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1em;
+}
+
+.table th{
+  background-color: var(--greyClear);
+  color: var(--white);
+  padding: 0.4em;
+  font-family: sans-serif;
+}
+
+.table td , input, select{
+  font-family: sans-serif;
+}
+
+.prix {
+  width: 5em;
+}
+
+.description{
+  width: 15em;
+  height: 2em;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+button {
+  cursor: pointer;
+  margin: 1%;
 }

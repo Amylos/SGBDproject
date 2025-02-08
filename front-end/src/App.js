@@ -66,9 +66,9 @@ function App() {
         <div className='App'>
             <nav className='Nav'>
                 <h1>Système central</h1>
-                <button onClick={() =>{setCurrentPanel('produits')}}>Produits</button>
-                <button onClick={() =>{setCurrentPanel('fournisseurs')}}>Fournisseurs</button>
-                <button onClick={() =>{setCurrentPanel('categories')}}>Catégories</button>
+                <button onClick={() =>{setCurrentPanel('produits')}} className='button'>Produits</button>
+                <button onClick={() =>{setCurrentPanel('fournisseurs')}} className='button'>Fournisseurs</button>
+                <button onClick={() =>{setCurrentPanel('categories')}} className='button'>Catégories</button>
             </nav>
             <div>
                 {
